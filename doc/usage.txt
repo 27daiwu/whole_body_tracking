@@ -1,0 +1,28 @@
+预处理动作 CSV:
+python scripts/csv_to_npz.py \
+  --input_file ./motions/dance1.csv \
+  --input_fps 30 \
+  --output_name dance1 \
+  --headless
+
+开始训练:
+python scripts/rsl_rl/train.py \
+  --task=Tracking-Flat-G1-v0 \
+  --motion_file ./motions/dance1.npz \
+  --headless
+
+本地导出：
+python scripts/rsl_rl/play.py \
+  --task=Tracking-Flat-G1-v0 \
+  --num_envs=1 \
+  --motion_file=/path/to/motion.npz
+
+直接加载本地 ONNX 文件：
+ros2 launch motion_tracking_controller mujoco.launch.py policy_path:=/绝对路径/到/policy.onnx
+
+在 MuJoCo 里直接从 WandB 加载：
+ros2 launch motion_tracking_controller mujoco.launch.py wandb_path:=<your_wandb_run_path>
+
+ros2 launch motion_tracking_controller real.launch.py \
+  network_interface:=<你的网卡名> \
+  wandb_path:=<your_wandb_run_path>
